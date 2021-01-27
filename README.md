@@ -1,5 +1,8 @@
 ## Tetris Game
-🧰 Java | 🤝 w/ deskmate + suggestions from prof | 📚 SCC
+🧰 Java | 🤝 w/ deskmate + suggestions from prof | 📚 SCC <br>
+
+🗂 Shape contains draw classes of 7 shapes<br>
+🗂 Game contains EventController class, Abstract class, Grid and Frame of the game, the main class, and JUnit test
 
 📑prof's requirements: develop a tetris game from scratch
 - [x] 7 shapes: bar, square, J, L, S, T, Z 
