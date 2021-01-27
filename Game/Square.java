@@ -1,0 +1,195 @@
+package Game;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+/*
+ * One Square on our Tetris Grid
+ */
+
+public class Square {
+	private Grid grid; // the environment where this Square is
+	
+	public static final Color EMPTY = Color.WHITE;//edit by WengIan
+
+	private int row, col; // the grid location of this Square
+
+	private boolean ableToMove; // true if this Square can move
+	
+	private Color color; // the color of this Square
+
+	// possible move directions are defined by the Game class
+
+	// dimensions of a Square
+	public static final int WIDTH = 20;
+
+	public static final int HEIGHT = 20;
+
+	
+	public Square(Grid g, int row, int col, Color c, boolean mobile) {
+
+		if (row < 0 || row > Grid.HEIGHT - 1)
+			throw new IllegalArgumentException("Invalid row = " + row);
+		if (col < 0 || col > Grid.WIDTH - 1)
+			throw new IllegalArgumentException("Invalid column  = " + col);
+
+		// initialize instance variables
+		grid = g;
+		this.row = row;
+		this.col = col;
+		color = c;
+		ableToMove = mobile;
+	}
+
+	/**
+	 * Returns the row for this Square
+	 */
+	public int getRow() {
+		return row;
+	}
+
+	/**
+	 * Returns the column for this Square
+	 */
+	public int getCol() {
+		return col;
+	}
+
+	/**
+	 * Returns true if this Square can move 1 spot in direction d
+	 * 
+	 * @param direction
+	 *            the direction to test for possible move
+	 */
+	public boolean canMove(Direction direction) {
+		if (!ableToMove)
+			return false;
+
+		boolean move = true;
+
+		// if the given direction is blocked, we can't move
+		// remember to check the edges of the grid
+		switch (direction) {
+
+		case DOWN:
+			if (row == (Grid.HEIGHT - 1) || grid.isSet(row + 1, col))
+				move = false;
+			break;
+
+		case LEFT:
+			if (col == 0 || grid.isSet(row, col - 1))
+				move = false;
+			break;
+
+		case RIGHT:
+			if (col == (Grid.WIDTH - 1) || grid.isSet(row, col + 1))
+				move = false;
+			break;
+
+		}
+		return move;
+	}
+
+	public void move(Direction direction) {
+
+		if (canMove(direction)) {
+			switch (direction) {
+
+			// Drop faster (SPACE)
+			case DOWN:
+				row = row + 1;
+				break;
+
+			// Move to left (<)
+			case LEFT:
+				col = col - 1;
+				break;
+
+			// Move to right (>)
+			case RIGHT:
+				col = col + 1;
+				break;
+
+			}
+		}
+	}
+
+	/**
+	 * Changes the color of this square
+	 * 
+	 * @param c
+	 *            the new color
+	 */
+	public void setColor(Color c) {
+		color = c;
+	}
+
+	/**
+	 * Gets the color of this square
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * Draws this square on the given graphics context
+	 */
+	public void draw(Graphics g) {
+		// calculate the upper left (x,y) coordinate of this square
+		int actualX = Grid.LEFT + col * WIDTH;
+		int actualY = Grid.TOP + row * HEIGHT;
+		g.setColor(color);
+		g.fillRect(actualX, actualY, WIDTH, HEIGHT);
+		// black border (if not empty)
+		if (!color.equals(Grid.EMPTY)) {
+			g.setColor(Color.BLACK);
+			g.drawRect(actualX, actualY, WIDTH, HEIGHT);
+		}
+	}
+	
+	/**
+	 *  Check the area around about to rotate piece
+	 */
+	
+	public boolean canRotateAbout(Square square) {
+		
+		boolean rotateAbout = true;
+
+		if (square.row == 0){
+			return false;
+		}
+		
+		else if (square.col == 0){
+			return false;
+			}
+		
+		
+		else if (square.col == Grid.WIDTH - 1){
+			return false; 
+		}
+		
+		else if (square.col == 1 || square.col == Grid.WIDTH -2){
+			if ( Game.getName() == "Bar"){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+		
+		return true;
+	}
+
+	/**
+	 * Rotate this squares
+	 */
+
+	public void rotateAbout(Square s0) {
+		int rTo = s0.row + (this.col - s0.col);
+		int cTo = s0.col + (s0.row - this.row);
+		this.row = rTo;
+		this.col = cTo;
+	}
+	
+}
+	
