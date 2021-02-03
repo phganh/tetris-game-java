@@ -18,7 +18,7 @@
 
 🔥bugs:
 - square shape is supposed to not be able to rotate (it rotates around its first box)
-- shapes when contacting with the border on its longest side won't be able to rotate
+- shapes when contacting with the border on its longest side can't rotate
 
 💡improvements:
 - [ ] UI
